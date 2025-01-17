@@ -4,7 +4,7 @@ const carSize = { length: 40, width: 25 };
 let debugMode = true;
 
 const maxSpeed = [4, -2];
-const adhesion = 0.1; // 0 - lód, 1 - pełna przyczepność
+const terrainAdhesion = 0.1; // 0 - lód, 1 - pełna przyczepność
 const engineFriction = 0.02;
 const brakingForce = 0.1;
 const acceleration = 0.2;
@@ -26,6 +26,7 @@ class player {
         const cosA = Math.round(Math.cos((this.rotation * Math.PI) / 180) * 100) / 100;
         const sinA = Math.round(Math.sin((this.rotation * Math.PI) / 180) * 100) / 100;     
         this.frontVector = { x: sinA, y: -cosA };
+        this.adhesion = terrainAdhesion
         this.calculatePoints();
     }
     calculatePoints() {
@@ -66,7 +67,7 @@ class player {
     
     rotate(angle) {
         if (Math.abs(this.speed) > 0.2) {
-            let turnEffect = (1 - adhesion) * (this.speed / maxSpeed[0]);
+            let turnEffect = (1 - this.adhesion) * (this.speed / maxSpeed[0]);
             this.rotation += angle * (1 - turnEffect);
         }           
         const cosA = Math.round(Math.cos((this.rotation * Math.PI) / 180) * 100) / 100;
